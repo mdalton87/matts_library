@@ -15,10 +15,14 @@ from sklearn.preprocessing import MinMaxScaler
 
 def split_dataframe(df, stratify_by=None, rand=1414, test_size=.2, validate_size=.3):
     """
+    
+    Description:
+    -----------
     Utility function to create train, validate, and test splits.
     Generates train, validate, and test samples from a dataframe.
     Credit to @ryanorsinger
-    Parameters
+    
+    Parameters:
     ----------
     df : DataFrame
         The dataframe to be split
@@ -34,6 +38,7 @@ def split_dataframe(df, stratify_by=None, rand=1414, test_size=.2, validate_size
     -------
     DataFrame
         Three dataframes representing the training, validate, and test samples
+        
     """
     
     if stratify_by == None:
@@ -50,6 +55,9 @@ def split_dataframe(df, stratify_by=None, rand=1414, test_size=.2, validate_size
 
 def remove_outliers(df, col, multiplier=1.5):
     '''
+    
+    Description:
+    -----------
     This function takes in a dataframe, a column name and, a multiplier as a float and returns a dataframe with outliers removed.
     
     Parameters:
@@ -79,6 +87,9 @@ def remove_outliers(df, col, multiplier=1.5):
 
 def X_train_validate_test(df, target):
     '''
+    
+    Description:
+    -----------
     this function takes in a dataframe and splits it into 3 samples, 
     a test, which is 20% of the entire dataframe, 
     a validate, which is 24% of the entire dataframe,
@@ -87,6 +98,14 @@ def X_train_validate_test(df, target):
     and a series with the dependent, or target variable. 
     The function returns 3 dataframes and 3 series:
     X_train (df) & y_train (series), X_validate & y_validate, X_test & y_test. 
+    
+    Parameters:
+    ----------
+    df: Dataframe
+        Prepped and cleaned dataframe
+    target: str
+        Column of the target variable as a string
+        
     '''
     # split df into test (20%) and train_validate (80%)
     train_validate, test = train_test_split(df, test_size=.2, random_state=123)
@@ -113,8 +132,16 @@ def X_train_validate_test(df, target):
 
 def get_object_cols(df):
     '''
+
+    Description:
+    -----------
     This function takes in a dataframe and identifies the columns that are object types
     and returns a list of those column names. 
+    
+    Parameters:
+    ----------
+    df: Dataframe
+    
     '''
     # create a mask of columns whether they are object type or not
     mask = np.array(df.dtypes == "object")
@@ -128,8 +155,17 @@ def get_object_cols(df):
 
 def get_numeric_X_cols(X_train, object_cols):
     '''
-    takes in a dataframe and list of object column names
+    
+    Description:
+    -----------
+    Takes in a dataframe and list of object column names
     and returns a list of all other columns names, the non-objects. 
+    
+    Parameters:
+    ----------
+    X_train: Dataframe
+        Train dataframe in which the target variable has been removed
+        
     '''
     numeric_cols = [col for col in X_train.columns.values if col not in object_cols]
     
@@ -139,11 +175,26 @@ def get_numeric_X_cols(X_train, object_cols):
 
 def min_max_scale(X_train, X_validate, X_test, numeric_cols):
     '''
-    this function takes in 3 dataframes with the same columns, 
+    
+    Description:
+    -----------
+    This function takes in 3 dataframes with the same columns, 
     a list of numeric column names (because the scaler can only work with numeric columns),
     and fits a min-max scaler to the first dataframe and transforms all
     3 dataframes using that scaler. 
     it returns 3 dataframes with the same column names and scaled values. 
+    
+    Parameters:
+    ----------
+    X_train: Dataframe
+        Train dataframe in which the target variable has been removed
+    X_validate: Dataframe
+        Validate dataframe in which the target variable has been removed
+    X_test: Dataframe
+        Test dataframe in which the target variable has been removed
+    numeric_cols: list
+        List of columns with numeric datatypes
+        
     '''
     # create the scaler object and fit it to X_train (i.e. identify min and max)
     # if copy = false, inplace row normalization happens and avoids a copy (if the input is already a numpy array).
@@ -185,7 +236,13 @@ def min_max_scale(X_train, X_validate, X_test, numeric_cols):
 
 def select_kbest(x, y, k):
     '''
-    This function takes in a dataframe, a target, and a number that is <= total number of features. The dataframe is split and scaled, the features are separated into objects and numberical columns, Finally the Select KBest test is run and returned.
+    
+    Description:
+    -----------
+    This function takes in a dataframe, a target, and a number that is less than or equal to total number of features. 
+    The dataframe is split and scaled, features are separated into objects and numberical columns, and 
+    finally the Select KBest test is run and returned.
+    
     Parameters:
     ----------
     x: dataframe
@@ -194,6 +251,7 @@ def select_kbest(x, y, k):
         String that is the target feature
     k: int
         Number of features to return
+        
     '''
     X_train, y_train, X_validate, y_validate, X_test, y_test = train_validate_test(x, y)
     object_cols = get_object_cols(x)
@@ -209,7 +267,13 @@ def select_kbest(x, y, k):
 
 def rfe(x, y, k):
     '''
-    This function takes in a dataframe, a target, and a number that is <= total number of features. The dataframe is split and scaled, the features are separated into objects and numberical columns, Finally the RFE test is run and returned.
+    
+    Description:
+    -----------
+    This function takes in a dataframe, a target, and a number that is less than or equal to total number of features. 
+    The dataframe is split and scaled, the features are separated into objects and numberical columns, and 
+    finally the RFE test is run and returned.
+
     Parameters:
     ----------
     x: dataframe
@@ -218,6 +282,7 @@ def rfe(x, y, k):
         String that is the target feature
     k: int
         Number of features to return
+        
     '''
     X_train, y_train, X_validate, y_validate, X_test, y_test = train_validate_test(x, y)
     object_cols = get_object_cols(x)

@@ -24,7 +24,15 @@ import datetime as dt
 
 def missing_zero_values_table(df):
     '''
+    
+    Description:
+    -----------
     This function takes in a dataframe and counts number of Zero values and NULL values. Returns a Table with counts and percentages of each value type.
+    
+    Parameters:
+    ----------
+    df: Dataframe
+    
     '''
     zero_val = (df == 0.00).astype(int).sum(axis=0)
     mis_val = df.isnull().sum()
@@ -48,7 +56,15 @@ def missing_zero_values_table(df):
 
 def missing_columns(df):
     '''
+    
+    Description:
+    -----------
     This function takes a dataframe, counts the number of null values in each row, and converts the information into another dataframe. Adds percent of total columns.
+    
+    Parameters:
+    ----------
+    df: Dataframe
+    
     '''
     missing_cols_df = pd.Series(data=df.isnull().sum(axis = 1).value_counts().sort_index(ascending=False))
     missing_cols_df = pd.DataFrame(missing_cols_df)
@@ -65,6 +81,9 @@ def missing_columns(df):
 
 def handle_missing_values(df, drop_col_proportion, drop_row_proportion):
     '''
+    
+    Description:
+    -----------
     This function takes in a dataframe and returns a dataframe with columns and rows that fit the input criteria removed.
     
     Parameters:
@@ -74,6 +93,7 @@ def handle_missing_values(df, drop_col_proportion, drop_row_proportion):
         a number between 0 and 1 that represents the proportion, for each column, of rows with non-missing values required to keep the column, 
     drop_row_proportion: float
         a number between 0 and 1 that represents the proportion, for each row, of columns/variables with non-missing values required to keep the row, and returns the dataframe with the columns and rows dropped as indicated.
+        
     '''
     # drop cols > thresh, axis = 1 == cols
     df = df.dropna(axis=1, thresh = drop_col_proportion * df.shape[0])
@@ -96,7 +116,20 @@ def handle_missing_values(df, drop_col_proportion, drop_row_proportion):
 
 def explore_univariate(train, categorical_vars, quant_vars):
     '''
+    
+    Description:
+    -----------
     Takes in a dataframe and a categorical variable and returns a frequency table and barplot of the frequencies, for a given categorical variable, compute the frequency count and percent split and return a dataframe of those values along with the different classes, and takes in a dataframequantitative variable and returns descriptive stats table, histogram, and boxplot of the distributions
+    
+    Parameters:
+    ----------
+    train: Dataframe
+        Dataframe used to train models 
+    categorical_vars: list containing strings
+        List of categorical variables within the train dataframe
+    quant_vars: list containing strings
+        List of quantitative variables within the train dataframe
+        
     '''
     for cat_var in categorical_vars:
         explore_univariate_categorical(train, cat_var)
@@ -108,8 +141,19 @@ def explore_univariate(train, categorical_vars, quant_vars):
 
 def explore_univariate_categorical(train, cat_var):
     '''
-    takes in a dataframe and a categorical variable and returns
+    
+    Description:
+    -----------
+    Takes in a dataframe and a categorical variable and returns
     a frequency table and barplot of the frequencies. 
+    
+    Parameters:
+    ----------
+    train: Dataframe
+        Dataframe used to train models 
+    cat_var: str
+        A categorical variable within the train dataframe
+
     '''
     frequency_table = freq_table(train, cat_var)
     plt.figure(figsize=(2,2))
@@ -120,8 +164,19 @@ def explore_univariate_categorical(train, cat_var):
 
 def explore_univariate_quant(train, quant):
     '''
-    takes in a dataframe and a quantitative variable and returns
+    
+    Description:
+    -----------
+    Takes in a dataframe and a quantitative variable and returns
     descriptive stats table, histogram, and boxplot of the distributions. 
+    
+    Parameters:
+    ----------
+    train: Dataframe
+        Dataframe used to train models 
+    quant: str
+        A quantitative variable within the train dataframe
+        
     '''
     descriptive_stats = train[quant].describe()
     plt.figure(figsize=(8,2))
@@ -138,8 +193,19 @@ def explore_univariate_quant(train, quant):
     
 def freq_table(train, cat_var):
     '''
-    for a given categorical variable, compute the frequency count and percent split
+    
+    Description:
+    -----------
+    For a given categorical variable, compute the frequency count and percent split
     and return a dataframe of those values along with the different classes. 
+    
+    Parameters:
+    ----------
+    train: Dataframe
+        Dataframe used to train models 
+    cat_var: str
+        A categorical variable within the train dataframe
+        
     '''
     class_labels = list(train[cat_var].unique())
 
@@ -157,10 +223,27 @@ def freq_table(train, cat_var):
 
 def explore_bivariate(train, categorical_target, continuous_target, binary_vars, quant_vars):
     '''
+    
+    Description:
+    -----------
     This function makes use of explore_bivariate_categorical and explore_bivariate_quant functions. 
     Each of those take in a continuous target and a binned/cut version of the target to have a categorical target. 
     the categorical function takes in a binary independent variable and the quant function takes in a quantitative 
     independent variable. 
+    
+    Parameters:
+    ----------
+    train: Dataframe
+        Dataframe used to train models 
+    categorical_target: str
+        The categorical target 
+    continuous_target: str
+        The continuous target
+    binary_vars: list containing strings
+        List of binary variables within the train dataframe
+    quant_vars: list containing strings
+        List of quantitative variables within the train dataframe
+    
     '''
     for binary in binary_vars:
         explore_bivariate_categorical(train, categorical_target, continuous_target, binary)
@@ -172,10 +255,25 @@ def explore_bivariate(train, categorical_target, continuous_target, binary_vars,
 
 def explore_bivariate_categorical(train, categorical_target, continuous_target, binary):
     '''
-    takes in binary categorical variable and binned/categorical target variable, 
+    
+    Description:
+    -----------
+    Takes in binary categorical variable and binned/categorical target variable, 
     returns a crosstab of frequencies
     runs a chi-square test for the proportions
     and creates a barplot, adding a horizontal line of the overall rate of the binary categorical variable. 
+    
+    Parameters:
+    ----------
+    train: Dataframe
+        Dataframe used to train models 
+    categorical_target: str
+        The categorical target 
+    continuous_target: str
+        The continuous target
+    binary: str
+        A binary variable within the train dataframe
+    
     '''
     print(binary, "\n_____________________\n")
     
@@ -264,7 +362,9 @@ def plot_scatter(train, categorical_target, continuous_target, quant):
 
 ######################### ____________________________________
 
-### Multivariate
+### Multivariate 
+
+#***** Under Construction
 
 
 def explore_multivariate(train, categorical_target, binary_vars, quant_vars):
@@ -312,10 +412,13 @@ def plot_swarm_grid_with_color(train, categorical_target, binary_vars, quant_var
 
 def run_stats_on_everything(train, categorical_target, continuous_target, binary_vars, quant_vars):
     '''
+    
+    Description:
+    -----------
     This function takes in the train dataframe and the segregated columns and runs statistical tests based on the variable type.
     
     Parameters:
-    --------
+    ----------
     train: df
         train dataframe
     categorical_target: str
@@ -328,12 +431,15 @@ def run_stats_on_everything(train, categorical_target, continuous_target, binary
         String or list of variables that are continuous
     
     '''
+    
+    # Cycles through binary variables creates a crosstab, runs a chi2 test and a manwhitney
     for binary in binary_vars:
         
         ct = pd.crosstab(train[binary], train[categorical_target], margins=True)
         chi2_summary, observed, expected = run_chi2(train, binary, categorical_target)
         mannwhitney = compare_means(train, continuous_target, binary, alt_hyp='two-sided')
         
+        # prints results 
         print(binary, "\n_____________________\n")
         print("\nMann Whitney Test Comparing Means: ", mannwhitney)
         print(chi2_summary)
@@ -346,10 +452,12 @@ def run_stats_on_everything(train, categorical_target, continuous_target, binary
     sns.heatmap(train.corr(), cmap='BuGn')
     plt.show()
     
+    # Cycles through quantitative variables runs spearmans correlation against continuous targets
     for quant in quant_vars:
 
         spearmans = compare_relationship(train, continuous_target, quant)
         
+        # Prints results
         print(quant, "\n____________________\n")
         print("Spearman's Correlation Test:\n")
         print(spearmans)
@@ -362,10 +470,13 @@ def run_stats_on_everything(train, categorical_target, continuous_target, binary
         
 def t_test(population_1, population_2, alpha=0.05, sample=1, tail=2, tail_dir='higher'):
     '''
+    
+    Description:
+    -----------
     This function takes in 2 populations, and an alpha confidence level and outputs the results of a t-test.
     
     Parameters:
-    -----------
+    ----------
     population_1: Series
         A series that is a subgroup of the total population. 
     population_2: Series
@@ -378,81 +489,109 @@ def t_test(population_1, population_2, alpha=0.05, sample=1, tail=2, tail_dir='h
     tail: {1 or 2}, 
         Default = 2, Need to be used in conjuction with tail_dir. performs a 1 or 2 sample t-test. 
     tail_dir: {'higher' or 'lower'}, 
-        defaul = 'higher'
+        default = 'higher'
+        
     '''
     
-    if sample==1 and tail == 2:
+    # One sample, two tail T-test
+    if sample == 1 and tail == 2:
         
+        # run stats.ttest_1samp
         t, p = stats.ttest_1samp(population_1, population_2.mean())
         
+        # prints t-statistic and p value of test
         print(f't-stat = {round(t,4)}')
         print(f'p     = {round(p,4)}\n')
         
+        # runs check if the test rejects the null hypothesis or failed to reject the null hypothesis based on the alpha value
         if p < alpha:
             print(f'Because the p-value: {round(p, 4)} is less than the alpha: {alpha}, we can reject the null hypothesis')
         else:
             print('There is insufficient evidence to reject the null hypothesis')
-                
+    
+    # One sample, one tail T-test
     elif sample==1 and tail == 1:
         
+        # run stats.ttest_1samp
         t, p = stats.ttest_1samp(population_1, population_2.mean())
         
+        # prints t-statistic and p value of test
         print(f't-stat = {round(t,4)}')
         print(f'p     = {round(p,4)}\n')
         
+        # sets the direction to check the if population_1 is greater than the total population
         if tail_dir == "higher":
+            
+            # runs check if the test rejects the null hypothesis or failed to reject the null hypothesis based on the alpha value and the t-statistic
             if (p/2) < alpha and t > 0:
                 print(f'Because the p-value: {round(p, 4)} is less than the alpha: {alpha}, and the t-stat: {round(t,4)} is greater than 0, we can reject the null hypothesis')
             else:
                 print('There is insufficient evidence to reject the null hypothesis')
         
+        # sets the direction to check the if population_1 is lower than the total population
         elif tail_dir == "lower":
+            
+            # runs check if the test rejects the null hypothesis or failed to reject the null hypothesis based on the alpha value and the t-statistic
             if (p/2) < alpha and t < 0:
                 print(f'Because the p-value: {round(p, 4)} is less than the alpha: {alpha}, and the t-stat: {round(t,4)} is less than 0, we can reject the null hypothesis')
             else:
                 print('There is insufficient evidence to reject the null hypothesis')
-        
+    
+    # Two sample, Two tailed T-test
     elif sample==2 and tail == 2:
         
+        # run stats.ttest_ind on two subgroups of the total population
         t, p = stats.ttest_ind(population_1, population_2)
-
+    
+        # prints t-statistic and p value of test
         print(f't-stat = {round(t,4)}')
         print(f'p     = {round(p,4)}\n')
         
+        # runs check if the test rejects the null hypothesis or failed to reject the null hypothesis based on the alpha value
         if p < alpha:
             print(f'Because the p-value: {round(p, 4)} is less than the alpha: {alpha}, we reject the null hypothesis')
         else:
             print('There is insufficient evidence to reject the null hypothesis')
-        
+    
+    # Two sample, One tailed T-test
     elif sample == 2 and tail == 1:
         
+        # run stats.ttest_ind on two subgroups of the total population
         t, p = stats.ttest_ind(population_1, population_2)
         
+        # prints t-statistic and p value of test
         print(f't-stat = {round(t,4)}')
         print(f'p     = {round(p,4)}\n')
         
+        # sets the direction to check the if population_1 is greater than population_2
         if tail_dir == "higher":
+            
+            # runs check if the test rejects the null hypothesis or failed to reject the null hypothesis based on the alpha value and the t-statistic
             if (p/2) < alpha and t > 0:
                 print(f'Because the p-value: {round(p, 4)} is less than alpha: {alpha}, and t-stat: {round(t,4)} is greater than 0, we reject the null hypothesis')
             else:
                 print('There is insufficient evidence to reject the null hypothesis')
         
+        # sets the direction to check the if population_1 is lower than population_2
         elif tail_dir == "lower":
+            
+            # runs check if the test rejects the null hypothesis or failed to reject the null hypothesis based on the alpha value and the t-statistic
             if (p/2) < alpha and t < 0:
                 print(f'Because the p-value: {round(p, 4)} is less than alpha: {alpha} and the t-stat: {round(t,4)} is less than 0, we reject the null hypothesis')
             else:
                 print('There is insufficient evidence to reject the null hypothesis')
-            
+    
+    # Prints instructions to fix parameters
     else:
         print('sample must be 1 or 2, tail must be 1 or 2, tail_dir must be "higher" or "lower"')
     
-    
-
 
 
 
 def chi2(df, var, target, alpha=0.05):
     '''
+    Description:
+    -----------
     This function takes in a df, variable, a target variable, and the alpha, and runs a chi squared test. Statistical analysis is printed in the output.
     
     Parameters;
@@ -464,10 +603,15 @@ def chi2(df, var, target, alpha=0.05):
         Target categorical variable
     alpha: float
         Default = 0.05, 0 < alpha < 1, Alpha value = 1 - confidence level
+        
     '''
+    # creates a crosstab of the data
     observed = pd.crosstab(df[var], df[target])
+    
+    # runs a chi_squared test and returns chi_squared stat, p-value, degrees of freedom, and explected values.
     chi2, p, degf, expected = stats.chi2_contingency(observed)
-
+    
+    # Prints the data above
     print('Observed\n')
     print(observed.values)
     print('---\nExpected\n')
@@ -475,6 +619,8 @@ def chi2(df, var, target, alpha=0.05):
     print('---\n')
     print(f'chi^2 = {chi2:.4f}')
     print(f'p     = {p:.4f}\n')
+    
+    # Tests whether the chi_squared test rejects the null hypothesis or not. 
     if p < alpha:
         print(f'Becasue the p-value: {round(p, 4)} is less than alpha: {alpha}, we can reject the null hypothesis')
     else:

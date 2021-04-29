@@ -22,6 +22,12 @@ from sklearn.cluster import KMeans
 
 
 def residuals(actual, predicted):
+    '''
+    Description:
+    -----------
+    This function calculates the residuals 
+    
+    '''
     return actual - predicted
 
 def sse(actual, predicted):
