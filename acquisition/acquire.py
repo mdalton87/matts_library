@@ -15,8 +15,21 @@ from env import host, user, password
 
 def get_connection(db, user=user, host=host, password=password):
     '''
+    Description:
+    -----------
     This function uses my info from my env file to
     create a connection url to access the Codeup db.
+    
+    Parameters:
+    ----------
+    db: str
+        String of the database name in SQL
+    user: str
+        String from env.py holding your username
+    host: str
+        String from env.py holding the codeup sql host info
+    password: str
+        String from env.py holding you passwork to codeup sql server
     '''
     return f'mysql+pymysql://{user}:{password}@{host}/{db}'    
     
@@ -26,6 +39,8 @@ def get_connection(db, user=user, host=host, password=password):
         
 def new_data(sql_query, db):
     '''
+    Description:
+    -----------
     This function takes in a SQL query and a database and returns a dataframe.
     
     Parameters:
@@ -40,9 +55,14 @@ def new_data(sql_query, db):
         
         
         
-def get_data(cached=False):
+def get_data(sql_query, db, cached=False):
     '''
-    This function reads in data from Codeup database and writes data to a csv file if cached == False or if cached == True reads in titanic df from a csv file, returns df.
+    Description:
+    -----------
+    This function reads in data from Codeup database and 
+    writes data to a csv file if cached == False or 
+    if cached == True reads in previously saved dataframe from a csv file,and 
+    returns a dataframe.
     '''
     if cached == False or os.path.isfile(db + '.csv') == False:
         
