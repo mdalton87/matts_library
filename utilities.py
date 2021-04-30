@@ -17,7 +17,6 @@ from exploration.stats import run_stats_on_everything, t_test, chi2
 from exploration.clustering import create_cluster, cluster_scatter_plot
 
 # Modeling 
-from modeling.anomaly import generate_column_counts_df, generate_column_probability_df, generate_counts_and_probability_df,
-    generate_conditional_probability_df, visualize_target_counts
+from modeling.anomaly import generate_column_counts_df, generate_column_probability_df, generate_counts_and_probability_df, generate_conditional_probability_df, visualize_target_counts, bollinger_bands, plt_bands
 
 from modeling.models import generate_xy_splits, get_metrics_bin, generate_baseline_model, generate_regression_model, apply_model_to_test_data

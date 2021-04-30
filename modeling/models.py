@@ -4,6 +4,16 @@ from math import sqrt
 from sklearn.metrics import classification_report, confusion_matrix, mean_squared_error, \
     r2_score, explained_variance_score
 
+
+############################################################################
+
+# Modeling
+
+############################################################################
+
+
+
+
 def generate_xy_splits(train, validate, test, target, drop_columns=None):
     """
     Utility function that splits samples into X and y values.
