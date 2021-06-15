@@ -46,7 +46,7 @@ from web_scraping.prepare import clean_and_toke, clean_lem_stop, clean_stem_stop
 
 from exploration.explore import missing_zero_values_table, missing_columns, handle_missing_values, explore_univariate, explore_bivariate, explore_multivariate
 
-from exploration.stats import run_stats_on_everything, t_test, chi2
+from exploration.stats import run_stats_on_everything, t_test, my_chi2
 
 from exploration.clustering import create_cluster, cluster_scatter_plot
 

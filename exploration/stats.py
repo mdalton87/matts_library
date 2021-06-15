@@ -121,7 +121,7 @@ def t_test(population_1, population_2, alpha=0.05, sample=1, tail=2, tail_dir='h
     
     
 
-def chi2(df, var, target, alpha=0.05):
+def my_chi2(df, var, target, alpha=0.05):
     '''
     Description:
     -----------
