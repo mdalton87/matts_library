@@ -70,8 +70,6 @@ def run_stats_on_everything(train, categorical_target, continuous_target, binary
 
         
         
-        
-        
 def t_test(population_1, population_2, alpha=0.05, sample=1, tail=2, tail_dir='higher'):
     '''
     
@@ -100,97 +98,28 @@ def t_test(population_1, population_2, alpha=0.05, sample=1, tail=2, tail_dir='h
     # One sample, two tail T-test
     if sample == 1 and tail == 2:
         
-        # run stats.ttest_1samp
-        t, p = stats.ttest_1samp(population_1, population_2.mean())
-        
-        # prints t-statistic and p value of test
-        print(f't-stat = {round(t,4)}')
-        print(f'p     = {round(p,4)}\n')
-        
-        # runs check if the test rejects the null hypothesis or failed to reject the null hypothesis based on the alpha value
-        if p < alpha:
-            print(f'Because the p-value: {round(p, 4)} is less than the alpha: {alpha}, we can reject the null hypothesis')
-        else:
-            print('There is insufficient evidence to reject the null hypothesis')
+        return one_samp_2_tail(population_1, population_2, alpha)
     
     # One sample, one tail T-test
     elif sample==1 and tail == 1:
         
-        # run stats.ttest_1samp
-        t, p = stats.ttest_1samp(population_1, population_2.mean())
-        
-        # prints t-statistic and p value of test
-        print(f't-stat = {round(t,4)}')
-        print(f'p     = {round(p,4)}\n')
-        
-        # sets the direction to check the if population_1 is greater than the total population
-        if tail_dir == "higher":
-            
-            # runs check if the test rejects the null hypothesis or failed to reject the null hypothesis based on the alpha value and the t-statistic
-            if (p/2) < alpha and t > 0:
-                print(f'Because the p-value: {round(p, 4)} is less than the alpha: {alpha}, and the t-stat: {round(t,4)} is greater than 0, we can reject the null hypothesis')
-            else:
-                print('There is insufficient evidence to reject the null hypothesis')
-        
-        # sets the direction to check the if population_1 is lower than the total population
-        elif tail_dir == "lower":
-            
-            # runs check if the test rejects the null hypothesis or failed to reject the null hypothesis based on the alpha value and the t-statistic
-            if (p/2) < alpha and t < 0:
-                print(f'Because the p-value: {round(p, 4)} is less than the alpha: {alpha}, and the t-stat: {round(t,4)} is less than 0, we can reject the null hypothesis')
-            else:
-                print('There is insufficient evidence to reject the null hypothesis')
+        return one_samp_1_tail(population_1, population_2, alpha, tail_dir)
     
     # Two sample, Two tailed T-test
     elif sample==2 and tail == 2:
         
-        # run stats.ttest_ind on two subgroups of the total population
-        t, p = stats.ttest_ind(population_1, population_2)
-    
-        # prints t-statistic and p value of test
-        print(f't-stat = {round(t,4)}')
-        print(f'p     = {round(p,4)}\n')
-        
-        # runs check if the test rejects the null hypothesis or failed to reject the null hypothesis based on the alpha value
-        if p < alpha:
-            print(f'Because the p-value: {round(p, 4)} is less than the alpha: {alpha}, we reject the null hypothesis')
-        else:
-            print('There is insufficient evidence to reject the null hypothesis')
+        return two_sample_2_tail(population_1, population_2, alpha)
     
     # Two sample, One tailed T-test
     elif sample == 2 and tail == 1:
         
-        # run stats.ttest_ind on two subgroups of the total population
-        t, p = stats.ttest_ind(population_1, population_2)
+        return two_sample_1_tail(population_1, population_2, alpha, tail_dir)
         
-        # prints t-statistic and p value of test
-        print(f't-stat = {round(t,4)}')
-        print(f'p     = {round(p,4)}\n')
-        
-        # sets the direction to check the if population_1 is greater than population_2
-        if tail_dir == "higher":
-            
-            # runs check if the test rejects the null hypothesis or failed to reject the null hypothesis based on the alpha value and the t-statistic
-            if (p/2) < alpha and t > 0:
-                print(f'Because the p-value: {round(p, 4)} is less than alpha: {alpha}, and t-stat: {round(t,4)} is greater than 0, we reject the null hypothesis')
-            else:
-                print('There is insufficient evidence to reject the null hypothesis')
-        
-        # sets the direction to check the if population_1 is lower than population_2
-        elif tail_dir == "lower":
-            
-            # runs check if the test rejects the null hypothesis or failed to reject the null hypothesis based on the alpha value and the t-statistic
-            if (p/2) < alpha and t < 0:
-                print(f'Because the p-value: {round(p, 4)} is less than alpha: {alpha} and the t-stat: {round(t,4)} is less than 0, we reject the null hypothesis')
-            else:
-                print('There is insufficient evidence to reject the null hypothesis')
-    
     # Prints instructions to fix parameters
     else:
         print('sample must be 1 or 2, tail must be 1 or 2, tail_dir must be "higher" or "lower"')
     
-
-
+    
 
 def chi2(df, var, target, alpha=0.05):
     '''
@@ -231,3 +160,100 @@ def chi2(df, var, target, alpha=0.05):
         print('There is insufficient evidence to reject the null hypothesis')
     
 
+    
+    
+
+##########################################################################################
+
+# T-Test helper functions
+
+##########################################################################################
+
+
+def one_samp_2_tail(population_1, population_2, alpha):
+        
+    # run stats.ttest_1samp
+    t, p = stats.ttest_1samp(population_1, population_2.mean())
+    
+    # prints t-statistic and p value of test
+    print(f't-stat = {round(t,4)}')
+    print(f'p-value = {round(p,4)}\n')
+    
+    # runs check if the test rejects the null hypothesis or failed to reject the null hypothesis based on the alpha value
+    if p < alpha:
+        print(f'Because the p-value: {round(p, 4)} is less than the alpha: {alpha}, we can reject the null hypothesis')
+    else:
+        print('There is insufficient evidence to reject the null hypothesis')
+        
+        
+def one_samp_1_tail(population_1, population_2, alpha, tail_dir):
+
+    # run stats.ttest_1samp
+    t, p = stats.ttest_1samp(population_1, population_2.mean())
+    
+    # prints t-statistic and p value of test
+    print(f't-stat = {round(t,4)}')
+    print(f'p-value = {round(p,4)}\n')
+    
+    # sets the direction to check the if population_1 is greater than the total population
+    if tail_dir == "higher":
+        
+        # runs check if the test rejects the null hypothesis or failed to reject the null hypothesis based on the alpha value and the t-statistic
+        if (p/2) < alpha and t > 0:
+            print(f'Because the p-value: {round(p, 4)} is less than the alpha: {alpha}, and the t-stat: {round(t,4)} is greater than 0, we can reject the null hypothesis')
+        else:
+            print('There is insufficient evidence to reject the null hypothesis')
+    
+    # sets the direction to check the if population_1 is lower than the total population
+    elif tail_dir == "lower":
+        
+        # runs check if the test rejects the null hypothesis or failed to reject the null hypothesis based on the alpha value and the t-statistic
+        if (p/2) < alpha and t < 0:
+            print(f'Because the p-value: {round(p, 4)} is less than the alpha: {alpha}, and the t-stat: {round(t,4)} is less than 0, we can reject the null hypothesis')
+        else:
+            print('There is insufficient evidence to reject the null hypothesis')
+
+            
+            
+def two_sample_2_tail(population_1, population_2, alpha):
+    # run stats.ttest_ind on two subgroups of the total population
+    t, p = stats.ttest_ind(population_1, population_2)
+    
+    # prints t-statistic and p value of test
+    print(f't-stat = {round(t,4)}')
+    print(f'p-value = {round(p,4)}\n')
+    
+    # runs check if the test rejects the null hypothesis or failed to reject the null hypothesis based on the alpha value
+    if p < alpha:
+        print(f'Because the p-value: {round(p, 4)} is less than the alpha: {alpha}, we reject the null hypothesis')
+    else:
+        print('There is insufficient evidence to reject the null hypothesis')
+
+        
+        
+def two_sample_1_tail(population_1, population_2, alpha, tail_dir):
+        
+    # run stats.ttest_ind on two subgroups of the total population
+    t, p = stats.ttest_ind(population_1, population_2)
+    
+    # prints t-statistic and p value of test
+    print(f't-stat = {round(t,4)}')
+    print(f'p     = {round(p,4)}\n')
+    
+    # sets the direction to check the if population_1 is greater than population_2
+    if tail_dir == "higher":
+        
+        # runs check if the test rejects the null hypothesis or failed to reject the null hypothesis based on the alpha value and the t-statistic
+        if (p/2) < alpha and t > 0:
+            print(f'Because the p-value: {round(p, 4)} is less than alpha: {alpha}, and t-stat: {round(t,4)} is greater than 0, we reject the null hypothesis')
+        else:
+            print('There is insufficient evidence to reject the null hypothesis')
+    
+    # sets the direction to check the if population_1 is lower than population_2
+    elif tail_dir == "lower":
+        
+        # runs check if the test rejects the null hypothesis or failed to reject the null hypothesis based on the alpha value and the t-statistic
+        if (p/2) < alpha and t < 0:
+            print(f'Because the p-value: {round(p, 4)} is less than alpha: {alpha} and the t-stat: {round(t,4)} is less than 0, we reject the null hypothesis')
+        else:
+            print('There is insufficient evidence to reject the null hypothesis')
